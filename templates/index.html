@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+{% block title %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3"> <!-- border-bottom -->
+        <h2 class="h3">Diseases</h2>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group mr-2">
+             <a class="btn btn-sm btn-outline-secondary" href="{{ request.url }}" role="button">  
+            <span data-feather="refresh-ccw"></span>
+            Refresh
+          </a>            
+          </div>
+          <a class="btn btn-sm btn-outline-secondary" href="/pipelines/new" role="button">
+   <!--       <button type="button" class="btn btn-sm btn-outline-secondary"> -->
+            <span data-feather="plus-square"></span>
+            New
+          </a>
+        </div>
+      </div>
+      
+
+{% endblock title%}
+
+{% block content %}
+<div class="column">
+<div>
+<div class="btn-toolbar" aria-label="Toolbar with button groups">
+  {% for item in indexes %}
+    <button type="button" class="btn btn-link" onclick="load_diseases('{{ item.lower() }}')"> {{ item }} </button>
+  {% endfor %}
+</div>
+<br/>
+<div>
+<!--
+<div class="input-group rounded">
+  <input type="search" id = "search_text" class="form-control rounded" placeholder="Search" aria-label="Search"
+  aria-describedby="search-addon" />
+  <span class="input-group-text border-0" id="search-addon">
+    <button type="button" class="btn btn-outline-secondary" onclick="search_diseases()"><i><span data-feather="search"></span></i></button>
+  </span>
+</div> -->
+
+ <div class="row no-gutters input-group">
+        <div class="col">
+            <input class="form-control border-secondary border-right-0 rounded-0" type="search" placeholder="Search" aria-label="Search"
+  aria-describedby="search-addon" id="search_text">
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-outline-secondary border-left-0 rounded-0 rounded-right" type="button" onclick="search_diseases()">
+                <i><span data-feather="search"></span></i>
+            </button>
+        </div>
+    </div>  
+    
+</div>
+<br/>
+ <div class="d-flex flex-column align-items-center justify-content-center">
+	 <div class="spinner-border text-primary" id="spinner" role="status">
+	   <span class="sr-only">Loading...</span>
+	 </div>
+	 
+ </div>
+ <div id="disease_list"></div>
+</div>
+{% endblock %}

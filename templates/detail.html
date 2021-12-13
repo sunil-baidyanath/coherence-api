@@ -1,0 +1,201 @@
+{% extends "layout.html" %}
+{% block title %}
+
+<br/>
+	<div class="d-flex justify-content-between" style="align-items:baseline;">
+  		<div>&nbsp;</div>
+  		<div class="text-left mb-4">         
+		        <h1 class="h3 mb-3 font-weight-normal">{{ item['preferred_name'].title() }}</h1>
+		        <p>{{ item['code'] }}</p>
+        </div>   
+        <div class="btn-toolbar pull-right" style="justify-content: flex-end;">
+            <div class="btn-group">
+                <a class="btn close" href="{{request.referrer}}" role="button">
+  					<span aria-hidden="true"><h1 class="h3 mb-3 font-weight-normal">&times;</h1></span>
+           
+          		</a>
+               
+            </div>
+        </div>
+        
+
+    </div>
+  
+
+
+{% endblock title%}
+
+{% block content %}
+       
+   	
+  {% with messages = get_flashed_messages(category_filter=["success"]) %}
+  {% if messages %}
+    
+      {% for message in messages %}
+         
+			  <div class="alert alert-success alert-dismissible fade show" role="alert">
+			  {{ message }}
+			  	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				    <span aria-hidden="true">&times;</span>
+				  </button>
+			   </div>
+		  
+	   {% endfor %}
+	 </ul>
+   {% endif %}
+   {% endwith %}
+  
+
+<div class="row">
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-header">Population Groups</div>
+      <div class="card-body">
+        
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-header">Age Groups</div>
+      <div class="card-body">
+        
+        </div>
+      </div>
+    </div>
+</div>
+
+</br>
+<div class="card">
+ <div class="card-header">
+    Related Symptoms
+ </div>
+ <div class="card-body">
+  <div class="row">
+  <table class="table table-striped">
+  <thead>
+  	<tr>
+  		<th>Name</th>
+  		<th>Code</th>
+  		<th>Relations</th>
+  	</tr>
+  </thead>
+  <tbody>
+  {% for s in item['symptoms'] %}
+  <tr>
+  	<td> {{ s['preferred_name'].title() }} </td>
+  	<td> {{ s['code'] }} </td>
+  	<td> 
+  		<button id="view_relation" type="button" class="btn btn-link" data-toggle="modal" data-target="#exampleModal"
+  		onclick = 'update_relations_modal({{ s['rels'] | tojson }})'>
+  			{{ s['rels'] | length }} relations
+		</button> 
+	</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+  </table>
+  </div>
+ </div>
+</div>
+
+</br>
+
+<div class="card">
+ <div class="card-header">
+    Related Organs
+ </div>
+ <div class="card-body">
+  <div class="row">
+   <table class="table table-striped">
+  <thead>
+  	<tr>
+  		<th>Name</th>
+  		<th>Code</th>
+  		<th>Relations</th>
+  	</tr>
+  </thead>
+  <tbody>
+  {% for s in item['organs'] %}
+  <tr>
+  	<td> {{ s['preferred_name'].title() }} </td>
+  	<td> {{ s['code'] }} </td>
+  	<td> 
+  		<button id="view_relation" type="button" class="btn btn-link" data-toggle="modal" data-target="#exampleModal"
+  		onclick = 'update_relations_modal({{ s['rels'] | tojson }})'>
+  			{{ s['rels'] | length }} relations
+		</button> 
+	</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+  </table>
+  </div>
+ </div>
+</div>
+
+</br>
+
+<div class="card">
+ <div class="card-header">
+    Related Diseases
+ </div>
+ <div class="card-body">
+  <div class="row">
+   <table class="table table-striped">
+  <thead>
+  	<tr>
+  		<th>Name</th>
+  		<th>Code</th>
+  		<th>Relations</th>
+  	</tr>
+  </thead>
+  <tbody>
+  {% for s in item['diseases'] %}
+  
+  <tr>
+  	<td> {% if 'preferred_name' in s %} {{ s['preferred_name'] }} {% endif %}</td>
+  	<td> {{ s['code'] }} </td>
+  	<td> 
+  		<button id="view_relation" type="button" class="btn btn-link" data-toggle="modal" data-target="#exampleModal"
+  		onclick = 'update_relations_modal({{ s['rels'] | tojson }})'>
+  			{{ s['rels'] | length }} relations
+		</button> 
+	</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+  </table>
+  </div>
+ </div>
+</div>
+
+<!-- Example Modal -->
+<div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Relations</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id = "modal-data">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br/>
+
+
+ <button class="btn btn-lg btn-primary btn-block" type="submit" onclick="back_to_index( '{{ request.referrer }}' )">Close</button>
+
+
+  
+{% endblock content %}
